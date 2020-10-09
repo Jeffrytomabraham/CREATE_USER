@@ -17,8 +17,11 @@ import com.banking.account.component.AccountCreationComponent;
 import com.banking.account.request.dto.UserDetailsDTO;
 import com.banking.account.response.dto.AccountDetailsDTO;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
-@RequestMapping("/banking")
+@RequestMapping("/banking/user/")
 public class BankAccountCreationController {
 	
 	private Log log = LogFactory.getLog(BankAccountCreationController.class);
@@ -28,6 +31,7 @@ public class BankAccountCreationController {
 	
 	
 	@RequestMapping(value= {"/create/account"},method = RequestMethod.POST)
+	@ApiOperation(value = "Create customer account")
 	public @ResponseBody ResponseEntity<?> createUserAccount(@Valid @RequestBody UserDetailsDTO userDetailsDTO){
 		log.info("Create user account");
 		log.debug("Create user account for -"+userDetailsDTO.getUserName());
@@ -41,4 +45,9 @@ public class BankAccountCreationController {
 			return new ResponseEntity<>(accountDetailsDTO,HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+//	@RequestMapping(value= {"/auth/user"},method = RequestMethod.POST)
+//	public @ResponseBody ResponseEntity<?> UserAuthentication(@Valid @RequestBody UserAuthenticationDTO userAuthenticationDTO){
+//		
+//	}
 }

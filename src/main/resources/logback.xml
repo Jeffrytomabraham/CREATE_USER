@@ -5,7 +5,7 @@
         </encoder>
     </appender>
  
-    <logger name="com.baeldung.spring.boot.management.logging" level="TRACE" />
+    <logger name="com.banking.account.spring.boot.management.logging" level="TRACE" />
  
     <root level="info">
         <appender-ref ref="STDOUT" />

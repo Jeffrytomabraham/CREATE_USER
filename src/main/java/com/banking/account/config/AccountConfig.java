@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@EnableMongoRepositories(basePackages = "com.concretepage.repository")
+@EnableMongoRepositories(basePackages = "com.banking.account")
 public class AccountConfig {
 
 	@Bean

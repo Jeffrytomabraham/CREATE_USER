@@ -16,7 +16,6 @@ import lombok.Setter;
 @Setter
 @Document
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserDetailsEntityDTO {
 
 	@Id
