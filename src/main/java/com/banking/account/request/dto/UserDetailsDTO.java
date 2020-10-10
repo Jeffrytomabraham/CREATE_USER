@@ -3,6 +3,7 @@ package com.banking.account.request.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -62,8 +63,10 @@ public class UserDetailsDTO {
 	@NotNull(message="city should not be null")
 	private String city;
 	
-	@NumberFormat
-	private Number phone;
+	@Size(max=10,message="phone number should be of length max 10")
+	@NotBlank
+	@NotNull(message="phone number should not be null")
+	private String phone;
 	
 	@NotBlank
 	@NotNull(message="password should not be null")
@@ -73,5 +76,5 @@ public class UserDetailsDTO {
 	@NotNull(message="accountType should not be null")
 	private String accountType;
 	
-	private long creditAmount;
+	private double creditAmount;
 }

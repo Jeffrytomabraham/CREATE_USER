@@ -22,7 +22,7 @@ public class AccountDetailsDTO {
 	private String postalCode;
 	private String country;
 	private String city;
-	private Number phone;
+	private String phone;
 	private List<AccountsDTO> accounts;
 	private ErrorResponse errorResponse;
 }
