@@ -41,11 +41,10 @@ public class BankAccountCreationController {
 			httpStatus = HttpStatus.BAD_REQUEST;
 		}
 		accountDetailsDTO.setHttpStatus(httpStatus);
-		return new ResponseEntity<>(accountDetailsDTO,HttpStatus.OK);
+		if(accountDetailsDTO.getErrorResponse()==null) {
+			return new ResponseEntity<>(accountDetailsDTO,HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(accountDetailsDTO,HttpStatus.BAD_REQUEST);
+		}
 	}
-	
-//	@RequestMapping(value= {"/auth/user"},method = RequestMethod.POST)
-//	public @ResponseBody ResponseEntity<?> UserAuthentication(@Valid @RequestBody UserAuthenticationDTO userAuthenticationDTO){
-//		
-//	}
 }

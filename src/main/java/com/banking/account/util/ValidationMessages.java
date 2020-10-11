@@ -2,7 +2,8 @@ package com.banking.account.util;
 
 public enum ValidationMessages {
 
-	  DUPLICATE_USER("DUPLICATE_USER", "This user already exists.");
+	  DUPLICATE_USER("DUPLICATE_USER", "This user already exists."),
+	  CONSTRAIN_VIOLATION("CONSTRAIN_VIOLATION", "Fiels constrain violation");
 
 	  private final String code;
 	  private final String description;
