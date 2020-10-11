@@ -12,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.banking.account.Entity.dto.UserDetailsEntityDTO;
+import com.banking.account.Entity.UserDetailsEntityDTO;
 import com.banking.account.dao.AccountCreationDAO;
+import com.banking.account.exception.DuplicateUserException;
 import com.banking.account.request.dto.UserDetailsDTO;
 import com.banking.account.response.dto.AccountDetailsDTO;
 import com.banking.account.response.dto.AccountsDTO;
@@ -31,7 +32,7 @@ public class AccountCreationServiceImpl implements AccountCreationService{
 	
     ModelMapper modelMapper = new ModelMapper();
 	
-	public AccountDetailsDTO createAccount(UserDetailsDTO userDetails) {
+	public AccountDetailsDTO createAccount(UserDetailsDTO userDetails) throws DuplicateUserException{
 		log.info("Entering AccountCreationServiceImpl.createAccount");
 		log.debug("Entering AccountCreationServiceImpl.createAccount");
 		UserDetailsEntityDTO userDetailsEntity = modelMapper.map(userDetails, UserDetailsEntityDTO.class);
@@ -50,24 +51,15 @@ public class AccountCreationServiceImpl implements AccountCreationService{
 		String encodedPassword = bCryptPasswordEncoder.encode(userDetails.getPassword());
 		userDetailsEntity.setPassword(encodedPassword);
 		userDetailsEntity.setAccounts(Arrays.asList(account));
-		
-		
 		log.debug("Setting entity class for create account");
 		
-		if(!accountCreationDAO.findByUserName(userDetailsEntity)) {
-			log.debug("No duplicate entry for user - "+userDetailsEntity.getUserName());
-			userDetailsEntity = accountCreationDAO.createAccount(userDetailsEntity);
-			log.debug("User Created and sending back response to frontend");
-			log.info("Exiting AccountCreationServiceImpl.createAccount");
-			return modelMapper.map(userDetailsEntity, AccountDetailsDTO.class);
-		} else {
-			log.debug("Duplicate user found. ");
-			ErrorResponse error = new ErrorResponse();
-			error.setErrorCode(ValidationMessages.DUPLICATE_USER.getCode());
-			error.setMessage(ValidationMessages.DUPLICATE_USER.getDescription());
-			AccountDetailsDTO accountDetails = new AccountDetailsDTO();
-			accountDetails.setErrorResponse(error);
-			return accountDetails;
-		}
+		if(accountCreationDAO.findByUserName(userDetailsEntity)) {
+			throw new DuplicateUserException(ValidationMessages.DUPLICATE_USER.getDescription());
+		} 
+		log.debug("No duplicate entry for user - "+userDetailsEntity.getUserName());
+		userDetailsEntity = accountCreationDAO.createAccount(userDetailsEntity);
+		log.debug("User Created and sending back response to frontend");
+		log.info("Exiting AccountCreationServiceImpl.createAccount");
+		return modelMapper.map(userDetailsEntity, AccountDetailsDTO.class);
 	}
 }

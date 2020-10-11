@@ -1,4 +1,4 @@
-package com.banking.account.Entity.dto;
+package com.banking.account.Entity;
 
 import java.util.List;
 

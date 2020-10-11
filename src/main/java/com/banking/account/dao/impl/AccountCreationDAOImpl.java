@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
-import com.banking.account.Entity.dto.UserDetailsEntityDTO;
+import com.banking.account.Entity.UserDetailsEntityDTO;
 import com.banking.account.dao.AccountCreationDAO;
 
 @Component

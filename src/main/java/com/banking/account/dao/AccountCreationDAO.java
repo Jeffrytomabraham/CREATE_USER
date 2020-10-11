@@ -1,6 +1,6 @@
 package com.banking.account.dao;
 
-import com.banking.account.Entity.dto.UserDetailsEntityDTO;
+import com.banking.account.Entity.UserDetailsEntityDTO;
 
 public interface AccountCreationDAO {
 

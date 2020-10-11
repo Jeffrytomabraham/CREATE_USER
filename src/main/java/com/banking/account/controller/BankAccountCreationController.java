@@ -36,14 +36,12 @@ public class BankAccountCreationController {
 		log.info("Create user account");
 		log.debug("Create user account for -"+userDetailsDTO.getUserName());
 		AccountDetailsDTO accountDetailsDTO =accountCreationComponent.createAccount(userDetailsDTO);
-		if(accountDetailsDTO.getErrorResponse()==null) {
-			log.info("User account successfully created");
-			log.debug("User account successfully created");
-			return new ResponseEntity<>(accountDetailsDTO,HttpStatus.OK);
-		} else {
-			log.error("error while creating user- "+accountDetailsDTO.getErrorResponse().getMessage());
-			return new ResponseEntity<>(accountDetailsDTO,HttpStatus.BAD_REQUEST);
+		HttpStatus httpStatus = HttpStatus.OK;
+		if(accountDetailsDTO.getErrorResponse()!=null) {
+			httpStatus = HttpStatus.BAD_REQUEST;
 		}
+		accountDetailsDTO.setHttpStatus(httpStatus);
+		return new ResponseEntity<>(accountDetailsDTO,HttpStatus.OK);
 	}
 	
 //	@RequestMapping(value= {"/auth/user"},method = RequestMethod.POST)
