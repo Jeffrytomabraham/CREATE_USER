@@ -23,32 +23,25 @@ public class AccountCreationDAOImpl implements AccountCreationDAO{
 	
 	@Override
 	public UserDetailsEntityDTO createAccount(UserDetailsEntityDTO userDetails) {
-		log.info("Saving user data");
+		log.info("Entering AccountCreationDAOImpl.createAccount");
 		log.debug("Entering AccountCreationDAOImpl.createAccount for saving user -"+userDetails.getUserName());
 		
 		UserDetailsEntityDTO savedUserDetails= mongoTemplate.save(userDetails);
 		
 		log.debug("Exiting AccountCreationDAOImpl.createAccount after saving user -"+userDetails.getUserName());
-		log.info("User data saved");
+		log.info("Exiting AccountCreationDAOImpl.createAccount");
 		return savedUserDetails;
 	}
 	
-	public boolean findByUserName(UserDetailsEntityDTO userDetails) {
-		log.info("Entering AccountCreationDAOImpl.findByUserName - ");
-		log.debug("Enetring AccountCreationDAOImpl.findByUserName for checking duplicate user -"+userDetails.getUserName());
+	public UserDetailsEntityDTO findByUserName(String username) {
+		log.info("Entering AccountCreationDAOImpl.findByUserName  ");
+		log.debug("Enetring AccountCreationDAOImpl.findByUserName for checking duplicate user -"+username);
 		
 		Query query = new Query();
-		query.addCriteria(Criteria.where("userName").is(userDetails.getUserName()));
+		query.addCriteria(Criteria.where("userName").is(username));
 		List<UserDetailsEntityDTO> savedUserDetails= mongoTemplate.find(query, UserDetailsEntityDTO.class);
-		if(savedUserDetails.size()>0) {
-			log.debug("Duplicate record for user in AccountCreationDAOImpl.findByUserName -"+userDetails.getUserName());
-			
-			return true;
-		} else {
-			log.debug("Not a duplicate user -"+userDetails.getUserName());
-			return false;
-		}
-		
-		
+		log.info("Exiting AccountCreationDAOImpl.findByUserName  ");
+		log.debug("Exiting AccountCreationDAOImpl.findByUserName after checking duplicate user -"+username);
+		return savedUserDetails.get(0);
 	}
 }

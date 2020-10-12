@@ -2,7 +2,9 @@ package com.banking.account.service.impl;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.logging.Log;
@@ -15,10 +17,11 @@ import org.springframework.stereotype.Service;
 import com.banking.account.Entity.UserDetailsEntityDTO;
 import com.banking.account.dao.AccountCreationDAO;
 import com.banking.account.exception.DuplicateUserException;
+import com.banking.account.exception.UserDoesNotExistsException;
+import com.banking.account.request.dto.AddAccountDTO;
 import com.banking.account.request.dto.UserDetailsDTO;
 import com.banking.account.response.dto.AccountDetailsDTO;
 import com.banking.account.response.dto.AccountsDTO;
-import com.banking.account.response.dto.ErrorResponse;
 import com.banking.account.service.AccountCreationService;
 import com.banking.account.util.ValidationMessages;
 
@@ -52,14 +55,42 @@ public class AccountCreationServiceImpl implements AccountCreationService{
 		userDetailsEntity.setPassword(encodedPassword);
 		userDetailsEntity.setAccounts(Arrays.asList(account));
 		log.debug("Setting entity class for create account");
-		
-		if(accountCreationDAO.findByUserName(userDetailsEntity)) {
+		UserDetailsEntityDTO userDetailsEntityDto = accountCreationDAO.findByUserName(userDetailsEntity.getUserName());
+		if(userDetailsEntityDto!=null){
 			throw new DuplicateUserException(ValidationMessages.DUPLICATE_USER.getDescription());
 		} 
 		log.debug("No duplicate entry for user - "+userDetailsEntity.getUserName());
 		userDetailsEntity = accountCreationDAO.createAccount(userDetailsEntity);
-		log.debug("User Created and sending back response to frontend");
+		log.debug("User Created and sending back response ");
+		log.debug("Exiting AccountCreationServiceImpl.createAccount");
 		log.info("Exiting AccountCreationServiceImpl.createAccount");
 		return modelMapper.map(userDetailsEntity, AccountDetailsDTO.class);
+	}
+	
+	public AccountDetailsDTO addAccount(AddAccountDTO addAccountDTO) throws UserDoesNotExistsException{
+		log.info("Entering AccountCreationServiceImpl.addAccountDTO");
+		log.debug("Entering AccountCreationServiceImpl.addAccountDTO");
+		UserDetailsEntityDTO userDetailsEntityDto = accountCreationDAO.findByUserName(addAccountDTO.getUserName());
+		if(userDetailsEntityDto ==null) {
+			log.debug("User not found exception for user "+addAccountDTO.getUserName());
+			throw new UserDoesNotExistsException(ValidationMessages.INVALID_USER.getDescription());
+		}
+		Random rand = new Random();
+		int accountNumber = rand.nextInt(1000);
+		AccountsDTO account = new AccountsDTO();
+		account.setAccountNumber(String.valueOf(accountNumber));
+		account.setAccountType(addAccountDTO.getAccountType());
+		account.setBalance(addAccountDTO.getCreditAmount());
+		account.setCreationDate(LocalDateTime.now());
+		account.setDueAmount(0);
+		List<AccountsDTO> accounts = new ArrayList<>();
+		accounts.addAll(userDetailsEntityDto.getAccounts());
+		accounts.add(account);
+		userDetailsEntityDto.setAccounts(accounts);
+		userDetailsEntityDto = accountCreationDAO.createAccount(userDetailsEntityDto);
+		log.debug("User account added Created ");
+		log.debug("Exiting AccountCreationServiceImpl.addAccountDTO");
+		log.info("Exiting AccountCreationServiceImpl.addAccountDTO");
+		return modelMapper.map(userDetailsEntityDto, AccountDetailsDTO.class);
 	}
 }

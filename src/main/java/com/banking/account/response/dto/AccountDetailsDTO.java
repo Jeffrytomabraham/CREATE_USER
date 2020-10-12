@@ -2,8 +2,6 @@ package com.banking.account.response.dto;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +14,6 @@ public class AccountDetailsDTO {
 	private String firstName;
 	private String lastName;
 	private String userName;
-	private HttpStatus httpStatus;
 	private String dob;
 	private int age;
 	private String email;
