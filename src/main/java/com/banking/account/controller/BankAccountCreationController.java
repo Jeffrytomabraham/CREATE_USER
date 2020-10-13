@@ -33,8 +33,7 @@ public class BankAccountCreationController {
 	@ApiOperation(value = "Create customer account")
 	public @ResponseBody ResponseEntity<?> createUserAccount(@Valid @RequestBody UserDetailsDTO userDetailsDTO){
 		log.info("Entering BankAccountCreationController.createUserAccount");
-		log.debug("Entering BankAccountCreationController.createUserAccount");
-		log.debug("Create user account for -"+userDetailsDTO.getUserName());
+		log.debug("Entering BankAccountCreationController.createUserAccount for user -"+userDetailsDTO.getUserName());
 		AccountDetailsDTO accountDetailsDTO =accountCreationComponent.createAccount(userDetailsDTO);
 		HttpStatus httpStatus = HttpStatus.OK;
 		if(accountDetailsDTO.getErrorResponse()!=null) {
@@ -50,8 +49,7 @@ public class BankAccountCreationController {
 	@ApiOperation(value = "Create customer account")
 	public @ResponseBody ResponseEntity<?> addUserAccount(@Valid @RequestBody AddAccountDTO addAccountDTO){
 		log.info("Entering BankAccountCreationController.addUserAccount");
-		log.debug("Entering BankAccountCreationController.addUserAccount");
-		log.debug("Add user account for -"+addAccountDTO.getUserName());
+		log.debug("Entering BankAccountCreationController.addUserAccount for user "+addAccountDTO.getUserName());
 		AccountDetailsDTO accountDetailsDTO =accountCreationComponent.addAccount(addAccountDTO);
 		HttpStatus httpStatus = HttpStatus.OK;
 		if(accountDetailsDTO.getErrorResponse()!=null) {
