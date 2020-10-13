@@ -1,8 +1,8 @@
 package com.banking.account.config;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
@@ -12,7 +12,7 @@ public class AccountConfigTest {
 
     private AccountConfig accountConfigUnderTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         accountConfigUnderTest = new AccountConfig();
     }

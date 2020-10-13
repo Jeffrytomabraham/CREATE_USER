@@ -1,21 +1,23 @@
 package com.banking.account.Entity;
 
-import com.banking.account.response.dto.AccountsDTO;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.banking.account.entity.UserDetailsEntityDTO;
+import com.banking.account.response.dto.AccountsDTO;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserDetailsEntityDTOTest {
 
     private UserDetailsEntityDTO userDetailsEntityDTOUnderTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         userDetailsEntityDTOUnderTest = new UserDetailsEntityDTO();
     }

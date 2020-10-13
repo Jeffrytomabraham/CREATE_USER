@@ -7,10 +7,9 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.banking.account.util.ValidationMessages;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -21,6 +20,7 @@ import com.banking.account.request.dto.UserDetailsDTO;
 import com.banking.account.response.dto.AccountDetailsDTO;
 import com.banking.account.response.dto.AccountsDTO;
 import com.banking.account.service.AccountCreationService;
+import com.banking.account.util.ValidationMessages;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountCreationComponentTest {
@@ -28,7 +28,7 @@ public class AccountCreationComponentTest {
     private AccountCreationComponent accountCreationComponentUnderTest;
     AccountDetailsDTO accountDetailsDTO = new AccountDetailsDTO();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         accountCreationComponentUnderTest = new AccountCreationComponent();
         accountCreationComponentUnderTest.accountCreationService = mock(AccountCreationService.class);

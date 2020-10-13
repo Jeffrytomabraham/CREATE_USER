@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.banking.account.component.AccountCreationComponent;
 import com.banking.account.request.dto.AddAccountDTO;
@@ -32,7 +31,7 @@ public class BankAccountCreationControllerTest {
     private BankAccountCreationController bankAccountCreationControllerUnderTest;
     AccountDetailsDTO accountDetailsDTO = new AccountDetailsDTO();
     private MockMvc mockMvc;
-    @Before
+    @BeforeEach
     public void setUp() {
         bankAccountCreationControllerUnderTest = new BankAccountCreationController();
         bankAccountCreationControllerUnderTest.accountCreationComponent = mock(AccountCreationComponent.class);

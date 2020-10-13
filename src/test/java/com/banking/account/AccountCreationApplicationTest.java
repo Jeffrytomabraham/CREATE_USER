@@ -1,13 +1,16 @@
 package com.banking.account;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AccountCreationApplicationTests {
+public class AccountCreationApplicationTest {
 
 	@Test
-	void contextLoads() {
+	public void contextLoads() {
+		assertTrue(true);
 	}
 
 }

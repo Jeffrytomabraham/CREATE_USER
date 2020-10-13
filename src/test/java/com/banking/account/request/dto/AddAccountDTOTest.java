@@ -1,23 +1,18 @@
 package com.banking.account.request.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import com.mongodb.assertions.Assertions;
-
-import junit.framework.Assert;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AddAccountDTOTest {
 
     private AddAccountDTO addAccountDTOUnderTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         addAccountDTOUnderTest = new AddAccountDTO();
     }

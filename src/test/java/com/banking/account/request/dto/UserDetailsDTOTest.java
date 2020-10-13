@@ -3,8 +3,8 @@ package com.banking.account.request.dto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -13,7 +13,7 @@ public class UserDetailsDTOTest {
 
     private UserDetailsDTO userDetailsDTOUnderTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         userDetailsDTOUnderTest = new UserDetailsDTO();
     }

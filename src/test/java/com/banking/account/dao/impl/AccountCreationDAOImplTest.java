@@ -1,27 +1,28 @@
 package com.banking.account.dao.impl;
 
-import com.banking.account.Entity.UserDetailsEntityDTO;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import com.banking.account.entity.UserDetailsEntityDTO;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountCreationDAOImplTest {
 
     private AccountCreationDAOImpl accountCreationDAOImplUnderTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         accountCreationDAOImplUnderTest = new AccountCreationDAOImpl();
         accountCreationDAOImplUnderTest.mongoTemplate = mock(MongoTemplate.class);

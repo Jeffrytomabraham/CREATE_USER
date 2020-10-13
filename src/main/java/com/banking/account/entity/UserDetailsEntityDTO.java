@@ -1,4 +1,4 @@
-package com.banking.account.Entity;
+package com.banking.account.entity;
 
 import java.util.List;
 

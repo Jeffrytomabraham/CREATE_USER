@@ -1,33 +1,38 @@
 package com.banking.account.service.impl;
 
-import com.banking.account.Entity.UserDetailsEntityDTO;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.web.util.NestedServletException;
+
 import com.banking.account.dao.AccountCreationDAO;
+import com.banking.account.entity.UserDetailsEntityDTO;
 import com.banking.account.exception.DuplicateUserException;
 import com.banking.account.exception.UserDoesNotExistsException;
 import com.banking.account.request.dto.AddAccountDTO;
 import com.banking.account.request.dto.UserDetailsDTO;
 import com.banking.account.response.dto.AccountDetailsDTO;
 import com.banking.account.response.dto.AccountsDTO;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountCreationServiceImplTest {
 
     private AccountCreationServiceImpl accountCreationServiceImplUnderTest;
     private UserDetailsEntityDTO userDetailsEntityDTO;
+    private UserDetailsEntityDTO userDetailsEntityDTO1;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         accountCreationServiceImplUnderTest = new AccountCreationServiceImpl();
         accountCreationServiceImplUnderTest.accountCreationDAO = mock(AccountCreationDAO.class);
@@ -53,11 +58,32 @@ public class AccountCreationServiceImplTest {
         List<AccountsDTO> accountList = new ArrayList<>();
         accountList.add(account);
         userDetailsEntityDTO.setAccounts(accountList);
+
+        userDetailsEntityDTO1= new UserDetailsEntityDTO();
+        userDetailsEntityDTO1.setAddress1("temp1");
+        userDetailsEntityDTO1.setAddress2("temp1");
+        userDetailsEntityDTO1.setAge(10);
+        userDetailsEntityDTO1.setCountry("India");
+        userDetailsEntityDTO1.setCity("tvm");
+        userDetailsEntityDTO1.setDob("02-02-2020");
+        userDetailsEntityDTO1.setEmail("abc@abc.com");
+        userDetailsEntityDTO1.setUserName("username");
+        userDetailsEntityDTO1.setPostalCode("698754");
+        userDetailsEntityDTO1.setFirstName("firstname");
+        userDetailsEntityDTO1.setLastName("lastname");
+        userDetailsEntityDTO1.setPhone("123654789");
+        userDetailsEntityDTO1.setPassword("123654789");
+        userDetailsEntityDTO1.setId("123654789");
+        userDetailsEntityDTO1.setAccounts(accountList);
     }
 
     @Test
     public void testCreateAccount() {
-        final UserDetailsDTO userDetails = new UserDetailsDTO();
+        UserDetailsDTO userDetails = new UserDetailsDTO();
+        userDetails.setPassword("123654789");
+        userDetails.setAccountType("Savings");
+        userDetails.setAccountType("savings");
+        userDetails.setCreditAmount(100);
 
         when(accountCreationServiceImplUnderTest.accountCreationDAO.findByUserName("username")).thenReturn(userDetailsEntityDTO);
 
@@ -82,26 +108,33 @@ public class AccountCreationServiceImplTest {
         Assert.assertEquals(userDetailsEntityDTO.getId(), "123654789");
     }
 
-    @Test(expected = DuplicateUserException.class)
+    @Test
     public void testCreateAccount_ThrowsDuplicateUserException() {
-        final UserDetailsDTO userDetails = new UserDetailsDTO();
+        UserDetailsDTO userDetails = new UserDetailsDTO();
+        userDetails.setPassword("123654789");
+        userDetails.setAccountType("Savings");
+        userDetails.setAccountType("savings");
+        userDetails.setCreditAmount(100);
 
-        when(accountCreationServiceImplUnderTest.accountCreationDAO.findByUserName("username")).thenReturn(userDetailsEntityDTO);
+        when(accountCreationServiceImplUnderTest.accountCreationDAO.findByUserName(any())).thenReturn(userDetailsEntityDTO);
 
-        when(accountCreationServiceImplUnderTest.accountCreationDAO.createAccount(any(UserDetailsEntityDTO.class))).thenReturn(userDetailsEntityDTO);
+        when(accountCreationServiceImplUnderTest.accountCreationDAO.createAccount(any(UserDetailsEntityDTO.class))).thenReturn(userDetailsEntityDTO1);
 
-        accountCreationServiceImplUnderTest.createAccount(userDetails);
+        Exception exception = assertThrows(DuplicateUserException.class, () -> {
+        	accountCreationServiceImplUnderTest.createAccount(userDetails);
+        });
     }
 
     @Test
     public void testAddAccount() {
-        final AddAccountDTO addAccountDTO = new AddAccountDTO();
+        AddAccountDTO addAccountDTO = new AddAccountDTO();
+        addAccountDTO.setAccountType("credit");
+        addAccountDTO.setCreditAmount(100);
+        addAccountDTO.setUserName("username");
 
-        final UserDetailsEntityDTO userDetailsEntityDTO = new UserDetailsEntityDTO();
-        when(accountCreationServiceImplUnderTest.accountCreationDAO.findByUserName("username")).thenReturn(userDetailsEntityDTO);
+        when(accountCreationServiceImplUnderTest.accountCreationDAO.findByUserName(any())).thenReturn(userDetailsEntityDTO);
 
-        final UserDetailsEntityDTO userDetailsEntityDTO1 = new UserDetailsEntityDTO();
-        when(accountCreationServiceImplUnderTest.accountCreationDAO.createAccount(any(UserDetailsEntityDTO.class))).thenReturn(userDetailsEntityDTO1);
+        when(accountCreationServiceImplUnderTest.accountCreationDAO.createAccount(any(UserDetailsEntityDTO.class))).thenReturn(userDetailsEntityDTO);
 
         final AccountDetailsDTO result = accountCreationServiceImplUnderTest.addAccount(addAccountDTO);
 
@@ -122,7 +155,7 @@ public class AccountCreationServiceImplTest {
         Assert.assertEquals(userDetailsEntityDTO.getId(), "123654789");
     }
 
-    @Test(expected = UserDoesNotExistsException.class)
+    @Test
     public void testAddAccount_ThrowsUserDoesNotExistsException() {
        
         final AddAccountDTO addAccountDTO = new AddAccountDTO();
@@ -133,6 +166,8 @@ public class AccountCreationServiceImplTest {
         final UserDetailsEntityDTO userDetailsEntityDTO1 = new UserDetailsEntityDTO();
         when(accountCreationServiceImplUnderTest.accountCreationDAO.createAccount(any(UserDetailsEntityDTO.class))).thenReturn(userDetailsEntityDTO1);
 
-        accountCreationServiceImplUnderTest.addAccount(addAccountDTO);
+        Exception exception = assertThrows(UserDoesNotExistsException.class, () -> {
+        	accountCreationServiceImplUnderTest.addAccount(addAccountDTO);
+        });
     }
 }

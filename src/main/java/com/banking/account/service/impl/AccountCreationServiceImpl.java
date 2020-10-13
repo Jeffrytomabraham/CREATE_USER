@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.banking.account.Entity.UserDetailsEntityDTO;
 import com.banking.account.dao.AccountCreationDAO;
+import com.banking.account.entity.UserDetailsEntityDTO;
 import com.banking.account.exception.DuplicateUserException;
 import com.banking.account.exception.UserDoesNotExistsException;
 import com.banking.account.request.dto.AddAccountDTO;
@@ -39,8 +39,8 @@ public class AccountCreationServiceImpl implements AccountCreationService{
 		log.info("Entering AccountCreationServiceImpl.createAccount");
 		log.debug("Entering AccountCreationServiceImpl.createAccount");
 		UserDetailsEntityDTO userDetailsEntity = modelMapper.map(userDetails, UserDetailsEntityDTO.class);
-		Random rand = new Random();
-		int accountNumber = rand.nextInt(1000);
+		
+		int accountNumber = randomNumberGenerator();
 		AccountsDTO account = new AccountsDTO();
 		account.setAccountNumber(String.valueOf(accountNumber));
 		account.setAccountType(userDetails.getAccountType());
@@ -75,8 +75,8 @@ public class AccountCreationServiceImpl implements AccountCreationService{
 			log.debug("User not found exception for user "+addAccountDTO.getUserName());
 			throw new UserDoesNotExistsException(ValidationMessages.INVALID_USER.getDescription());
 		}
-		Random rand = new Random();
-		int accountNumber = rand.nextInt(1000);
+		
+		int accountNumber = randomNumberGenerator();
 		AccountsDTO account = new AccountsDTO();
 		account.setAccountNumber(String.valueOf(accountNumber));
 		account.setAccountType(addAccountDTO.getAccountType());
@@ -92,5 +92,10 @@ public class AccountCreationServiceImpl implements AccountCreationService{
 		log.debug("Exiting AccountCreationServiceImpl.addAccountDTO");
 		log.info("Exiting AccountCreationServiceImpl.addAccountDTO");
 		return modelMapper.map(userDetailsEntityDto, AccountDetailsDTO.class);
+	}
+	
+	private int randomNumberGenerator() {
+		Random rand = new Random();
+		return rand.nextInt(10000);
 	}
 }
