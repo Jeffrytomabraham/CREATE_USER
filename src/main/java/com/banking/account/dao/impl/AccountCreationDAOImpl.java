@@ -42,6 +42,9 @@ public class AccountCreationDAOImpl implements AccountCreationDAO{
 		List<UserDetailsEntityDTO> savedUserDetails= mongoTemplate.find(query, UserDetailsEntityDTO.class);
 		log.info("Exiting AccountCreationDAOImpl.findByUserName  ");
 		log.debug("Exiting AccountCreationDAOImpl.findByUserName after checking duplicate user -"+username);
-		return savedUserDetails.get(0);
+		if(savedUserDetails.size()>0)
+			return savedUserDetails.get(0);
+		else
+			return null;
 	}
 }
