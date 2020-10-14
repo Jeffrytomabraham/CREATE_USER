@@ -40,13 +40,4 @@ public class AccountCreationDAOImplTest {
         Assert.assertNotNull(result);
     }
 
-    //@Test
-    public void testFindByUserName() {
-        final UserDetailsEntityDTO userDetailsEntityDTO = new UserDetailsEntityDTO();
-        final List<UserDetailsEntityDTO> userDetailsEntityDTOS = Arrays.asList(userDetailsEntityDTO);
-        when(accountCreationDAOImplUnderTest.mongoTemplate.find(new Query(null), UserDetailsEntityDTO.class)).thenReturn(userDetailsEntityDTOS);
-
-        final UserDetailsEntityDTO result = accountCreationDAOImplUnderTest.findByUserName("username");
-        Assert.assertNotNull(result);
-    }
 }
